@@ -41,6 +41,7 @@
 #include "limSecurityUtils.h"
 #include "pmmApi.h"
 #include "limApi.h"
+#include "limTimerUtils.h"
 
 // default value 5000 ms for background scan period when it is disabled
 #define LIM_BACKGROUND_SCAN_PERIOD_DEFAULT_MS    5000
@@ -1952,7 +1953,9 @@ limDeactivateAndChangeTimer(tpAniSirGlobal pMac, tANI_U32 timerId)
         {
                 limLog(pMac, LOGE, FL("Unable to change g_lim_ap_ecsa_timer timer"));
         }
+	break;
 
+    #ifdef WLAN_FEATURE_LFR_MBB
     case eLIM_AUTH_SAE_TIMER:
         if (tx_timer_deactivate(&pMac->lim.limTimers.sae_auth_timer)
             != TX_SUCCESS) {
@@ -1967,6 +1970,7 @@ limDeactivateAndChangeTimer(tpAniSirGlobal pMac, tANI_U32 timerId)
             return;
         }
         break;
+    #endif
 
         break;
      default:
